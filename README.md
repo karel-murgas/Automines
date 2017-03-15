@@ -1,0 +1,2 @@
+# automines
+Learning with minesweeper
