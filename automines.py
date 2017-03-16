@@ -49,11 +49,44 @@ def init_screen(width=20, height=5):
     pyg.display.update()
     return screen_
 
+
+def decode_difficulty(diff):
+    """Return full name of difficulty based on input"""
+
+    if diff == 'b':
+        return 'beginner'
+    elif diff == 'i':
+        return 'intermediate'
+    elif diff == 'e':
+        return 'expert'
+    else:
+        return ''
+
+
 def play():
     """Main game cycle (choose difficulty and start new game)"""
 
-    screen = init_screen()
+    difficulty = ''
+    while difficulty is '':
+        difficulty = decode_difficulty(input('Welcome! Please choose difficulty: Begginer / Intermediate / Expert. \n'
+                                             '(b/i/e) \n'))
+
+    game(DIFFICULTY[difficulty])
+
+
+def game(difficulty):
+    """Cycle for one game"""
+
+    screen = init_screen(difficulty[0], difficulty[1])
+
+    minefield = Minefield(*difficulty)
+
+    [[screen.blit(cell.image, cell.rect) for cell in row] for row in minefield.map]
+    pyg.display.flip()
+
+    input('Test')
 
 
 
-test()
+
+play()

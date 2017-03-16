@@ -75,11 +75,12 @@ class Cell(pyg.sprite.Sprite):
 
     def __init__(self, row, col, mined=False, status='neutral', size=CELLSIZE):
         pyg.sprite.Sprite.__init__(self)
-        self.status = status
-        self.image = pyg.Surface((size, size))
-        self.load_image(status)
         self.row = row
         self.col = col
+        self.status = status
+        self.rect = pyg.Rect(row*size, col*size, size, size)
+        self.image = pyg.Surface((size, size))
+        self.load_image(status)
         self.mined = mined
 
     def load_image(self, status):
