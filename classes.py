@@ -21,6 +21,7 @@
 #############
 
 import pygame as pyg
+import random as rnd
 from constants import *
 
 
@@ -39,21 +40,49 @@ class Minefield():
         self.map = self.create_empty_field()
 
     def create_empty_field(self):
-        """Creates empty minefield"""
+        """Create empty minefield"""
 
         return [[Cell(r, c) for c in range(self.cols)] for r in range(self.rows)]
+
+    def populate(self, r0, c0):
+        """Populate minefield with mines"""
+
+        def place_mine(pot_rows, pot_cols):
+            """Place mine in one of available cells"""
+
+            row = rnd.choice(pot_rows)
+            col = rnd.choice(pot_cols[row])
+            self.map[row][col].mined = True
+            return mark_as_full(pot_rows, pot_cols, row, col)
+
+        def mark_as_full(pot_rows, pot_cols, row, col):
+            """EliminatSSs cell form pool of minable cells"""
+
+            del pot_cols[row][col]
+            if  not pot_cols[row]:
+                del pot_rows[row]
+            return pot_rows, pot_cols
+
+        pot_rows = [r for r in range(self.rows)]
+        pot_cols = [[c for c in range(self.cols)] for r in pot_rows]
+
+        pot_rows, pot_cols = mark_as_full(pot_rows, pot_cols, r0, c0)
+
+        for m in range(self.mines):
+            pot_rows, pot_cols = place_mine(pot_rows, pot_cols)
 
 
 class Cell(pyg.sprite.Sprite):
     """One cell (field) on the map"""
 
-    def __init__(self, row, col, status='clear', size=CELLSIZE):
+    def __init__(self, row, col, mined=False, status='neutral', size=CELLSIZE):
         pyg.sprite.Sprite.__init__(self)
         self.status = status
         self.image = pyg.Surface((size, size))
-        self.load_image('neutral')
+        self.load_image(status)
         self.row = row
         self.col = col
+        self.mined = mined
 
     def load_image(self, status):
         """Gets required image"""

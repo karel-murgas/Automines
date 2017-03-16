@@ -18,5 +18,5 @@
 # TODO naimportovat věci
 # TODO Vizualizace minefieldu (pygame)
 # TODO Spouštění hry, input (game loop)
-# TODO Po kliknutí vygenerovat miny
+# TODO Po kliknutí vygenerovat miny, generování je ready
 # TODO Proces odkrývání polí
