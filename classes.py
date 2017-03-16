@@ -20,7 +20,6 @@
 # Libraries #
 #############
 
-import pygame as pyg
 import random as rnd
 from constants import *
 
@@ -28,7 +27,6 @@ from constants import *
 #######################
 # Classes definitions #
 #######################
-
 
 class Minefield():
     """Map of the minefield"""
@@ -56,11 +54,11 @@ class Minefield():
             return mark_as_full(pot_rows, pot_cols, row, col)
 
         def mark_as_full(pot_rows, pot_cols, row, col):
-            """EliminatSSs cell form pool of minable cells"""
+            """Eliminate cell form pool of minable cells"""
 
-            del pot_cols[row][col]
-            if  not pot_cols[row]:
-                del pot_rows[row]
+            pot_cols[row].remove(col)
+            if not pot_cols[row]:
+                pot_rows.remove(row)
             return pot_rows, pot_cols
 
         pot_rows = [r for r in range(self.rows)]

@@ -15,8 +15,45 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO naimportovat věci
+
+#############
+# Libraries #
+#############
+
+from classes import *
+
+
+########################
+# Function definitions #
+########################
+
 # TODO Vizualizace minefieldu (pygame)
 # TODO Spouštění hry, input (game loop)
 # TODO Po kliknutí vygenerovat miny, generování je ready
 # TODO Proces odkrývání polí
+
+def test():
+    """For testing purposes only"""
+
+    game = Minefield(*DIFFICULTY['beginner'])
+    game.populate(0, 0)
+    print([['mine' for x in y if x.mined is True] for y in game.map])
+    init_screen()
+
+
+def init_screen(width=20, height=5):
+    """Gets the screen ready and draws environment"""
+
+    screen_ = pyg.display.set_mode((width * CELLSIZE, height * CELLSIZE))
+    pyg.display.set_caption('Automines')
+    pyg.display.update()
+    return screen_
+
+def play():
+    """Main game cycle (choose difficulty and start new game)"""
+
+    screen = init_screen()
+
+
+
+test()

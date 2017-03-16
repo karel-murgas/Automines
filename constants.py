@@ -20,10 +20,22 @@
 # Libraries #
 #############
 
+import pygame as pyg
+
 
 ##########################
 # Global initializations #
 ##########################
+
+
+pyg.font.init()
+pyg.init()
+
+
+#########
+# Fixed #
+#########
+
 
 DIFFICULTY = {
     'beginner': (8, 8, 10),
