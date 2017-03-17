@@ -31,7 +31,7 @@ from constants import *
 class Minefield():
     """Map of the minefield"""
 
-    def __init__(self, rows, columns, mines):
+    def __init__(self, columns, rows, mines):
         self.rows = rows
         self.cols = columns
         self.mines = mines
@@ -78,13 +78,52 @@ class Cell(pyg.sprite.Sprite):
         self.row = row
         self.col = col
         self.status = status
-        self.rect = pyg.Rect(row*size, col*size, size, size)
+        self.rect = pyg.Rect(col*size, row*size, size, size)
         self.image = pyg.Surface((size, size))
         self.load_image(status)
         self.mined = mined
+        self.danger_level = None
 
     def load_image(self, status):
-        """Gets required image"""
+        """Get required image"""
 
         img = pyg.image.load(GRAPHICS['folder'] + GRAPHICS['cell'][status])
         self.image.blit(img, (0, 0))
+
+    def count_mines(self, minefield):
+        """Count how many mines are neighbouring this cell"""
+
+        def test_cell(r, c, mf):
+            """Test, if cell with given coordinates is mined or not"""
+
+            if r < 0 or c < 0 or r > mf.rows-1 or c > mf.cols-1:  # Out of minefiled
+                return 0
+            elif not minefield.map[r][c].mined:  # Without mine
+                return 0
+            else:  # With mine
+                return 1
+
+        self.danger_level =\
+            sum(map(sum,
+                    [[test_cell(self.row + r, self.col + c, minefield) for r in iter((-1, 0, 1)) if r != c or r != 0]
+                     for c in iter((-1, 0, 1))]))  # Iterates through all 8 neighbours and sums the results
+
+    def print_danger_level(self):
+        """Print danger level on top of the cell"""
+
+        dl = self.danger_level
+        label = DANGER_LEVEL_FONT.render(str(dl), 1, COLORS[str(dl)])
+        self.image.blit(label, (CELLSIZE/4, 2))
+
+    def reveal(self, minefield):
+        """Reveal the cell to show if it is safe"""
+
+        if self.status is 'neutral':
+            if self.mined:
+                self.status = 'mine'
+            else:
+                self.status = 'clear'
+                self.count_mines(minefield)
+            self.load_image(self.status)
+            if self.danger_level:  # Exists and is not 0
+                self.print_danger_level()

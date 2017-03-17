@@ -21,14 +21,14 @@
 #############
 
 from classes import *
+import math
 
 
 ########################
 # Function definitions #
 ########################
 
-# TODO Vizualizace minefieldu (pygame)
-# TODO Spouštění hry, input (game loop)
+# TODO input (game loop)
 # TODO Po kliknutí vygenerovat miny, generování je ready
 # TODO Proces odkrývání polí
 
@@ -59,6 +59,8 @@ def decode_difficulty(diff):
         return 'intermediate'
     elif diff == 'e':
         return 'expert'
+    elif diff == 't':
+        return 'test'
     else:
         return ''
 
@@ -84,7 +86,30 @@ def game(difficulty):
     [[screen.blit(cell.image, cell.rect) for cell in row] for row in minefield.map]
     pyg.display.flip()
 
-    input('Test')
+    playing = True
+    populated = False
+    while playing:
+        event = pyg.event.poll()
+
+        if event.type == pyg.QUIT:  # end program
+            exit()
+        elif event.type == pyg.KEYDOWN:
+            if event.key == pyg.K_ESCAPE:  # end program
+                exit()
+        elif event.type == pyg.MOUSEBUTTONDOWN:
+            x, y = pyg.mouse.get_pos()
+            row = math.floor(y/CELLSIZE)
+            col = math.floor(x/CELLSIZE)
+            if event.button == 1:
+                if not populated:
+                    populated = True
+                    minefield.populate(row, col)
+                target = minefield.map[row][col]
+                target.reveal(minefield)
+                screen.blit(target.image, target.rect)
+
+        pyg.display.flip()
+
 
 
 

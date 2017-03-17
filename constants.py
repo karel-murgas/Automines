@@ -37,13 +37,27 @@ pyg.init()
 #########
 
 
-DIFFICULTY = {
+CELLSIZE = 20
+
+DIFFICULTY = {  # Columns, Rows, Mines
     'beginner': (8, 8, 10),
     'intermediate': (16, 16, 40),
-    'expert':  (24, 24, 99)
+    'expert':  (24, 24, 99),
+    'test': (10, 1, 3)
 }
 
-CELLSIZE = 20
+COLORS = {  # Colors for different danger levels
+    '1': (0, 0, 255),  # Intense Blue
+    '2': (0, 64, 0),  # Dark Green
+    '3': (255, 0, 0),  # Intense Red
+    '4': (0, 0, 102),  # Dark Blue
+    '5': (153, 76, 0),  # Dark Brown
+    '6': (102, 255, 255),  # Light Blue
+    '7': (0, 0, 0),  # Black
+    '8': (128, 128, 128)  # Gray
+}
+
+DANGER_LEVEL_FONT = pyg.font.SysFont(pyg.font.get_default_font(), int(CELLSIZE*1.1))
 
 GRAPHICS = {
     'folder': 'graphics/',
