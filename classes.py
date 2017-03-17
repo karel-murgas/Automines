@@ -103,10 +103,9 @@ class Cell(pyg.sprite.Sprite):
             else:  # With mine
                 return 1
 
-        self.danger_level =\
-            sum(map(sum,
-                    [[test_cell(self.row + r, self.col + c, minefield) for r in iter((-1, 0, 1)) if r != c or r != 0]
-                     for c in iter((-1, 0, 1))]))  # Iterates through all 8 neighbours and sums the results
+        self.danger_level = \
+            sum([test_cell(self.row + r, self.col + c, minefield) for r in iter((-1, 0, 1)) for c in iter((-1, 0, 1))
+                 if r != c or r != 0])  # Iterates through all 8 neighbours and sums the results
 
     def print_danger_level(self):
         """Print danger level on top of the cell"""
@@ -118,6 +117,17 @@ class Cell(pyg.sprite.Sprite):
     def reveal(self, minefield):
         """Reveal the cell to show if it is safe"""
 
+        def test_cell(r, c, mf):
+            """Test, if cell with given coordinates is revealed or not"""
+
+            if r < 0 or c < 0 or r > mf.rows-1 or c > mf.cols-1:  # Out of minefiled
+                return None
+            elif minefield.map[r][c].status == 'neutral':  # Unrevealed
+                return minefield.map[r][c]
+            else:  # Revealed
+                return None
+
+        revealable = []
         if self.status is 'neutral':
             if self.mined:
                 self.status = 'mine'
@@ -126,7 +136,31 @@ class Cell(pyg.sprite.Sprite):
                 self.count_mines(minefield)
             self.load_image(self.status)
             if self.danger_level is not None:
-                if self.danger_level == 0:
-                    pass  # TODO Create set of cells to reveal and return it
+                if self.danger_level == 0:  # Iterates through all 8 neighbours and returns unrevealed
+                    revealable = [minefield.map[self.row + r][self.col + c] for r in iter((-1, 0, 1)) for c in
+                                  iter((-1, 0, 1)) if (r != c or r != 0)
+                                  and test_cell(self.row + r, self.col + c, minefield) is not None]
                 else:
                     self.print_danger_level()
+
+        return revealable
+
+    def mark(self):
+        """Change status (neutral, maybe, danger)"""
+
+        change = False
+        if self.status == 'neutral':
+            self.status = 'danger'
+            change = True
+        elif self.status == 'danger':
+            self.status = 'maybe'
+            change = True
+        elif self.status == 'maybe':
+            self.status = 'neutral'
+            change = True
+
+        if change:
+            self.load_image(self.status)
+
+
+

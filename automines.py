@@ -27,17 +27,10 @@ from classes import *
 # Function definitions #
 ########################
 
-# TODO input (game loop)
-# TODO Po kliknutí vygenerovat miny, generování je ready
-# TODO Proces odkrývání polí
-
-def test():
-    """For testing purposes only"""
-
-    game = Minefield(*DIFFICULTY['beginner'])
-    game.populate(0, 0)
-    print([['mine' for x in y if x.mined is True] for y in game.map])
-    init_screen()
+# TODO Konec hry (výhra, prohra)
+# TODO UI při hře
+# TODO UI na zahájení nové hry
+# TODO Vlastní obtížnost
 
 
 def init_screen(width=20, height=5):
@@ -103,8 +96,14 @@ def game(difficulty):
                 if not populated:
                     populated = True
                     minefield.populate(row, col)
+                to_reveal = {minefield.map[row][col]}
+                while len(to_reveal) > 0:
+                    target = to_reveal.pop()
+                    to_reveal = to_reveal.union(target.reveal(minefield))
+                    screen.blit(target.image, target.rect)
+            elif event.button == 3:
                 target = minefield.map[row][col]
-                target.reveal(minefield)  # TODO Change to set of fields to reveal, add while cycle and set merging
+                target.mark()
                 screen.blit(target.image, target.rect)
 
         pyg.display.flip()
