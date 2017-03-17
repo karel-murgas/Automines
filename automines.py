@@ -21,7 +21,6 @@
 #############
 
 from classes import *
-import math
 
 
 ########################

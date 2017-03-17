@@ -113,7 +113,7 @@ class Cell(pyg.sprite.Sprite):
 
         dl = self.danger_level
         label = DANGER_LEVEL_FONT.render(str(dl), 1, COLORS[str(dl)])
-        self.image.blit(label, (CELLSIZE/4, 2))
+        self.image.blit(label, (CELLSIZE/4, 0))
 
     def reveal(self, minefield):
         """Reveal the cell to show if it is safe"""

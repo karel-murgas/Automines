@@ -21,6 +21,7 @@
 #############
 
 import pygame as pyg
+import math
 
 
 ##########################
@@ -49,7 +50,7 @@ DIFFICULTY = {  # Columns, Rows, Mines
 COLORS = {  # Colors for different danger levels
     '1': (0, 0, 255),  # Intense Blue
     '2': (0, 64, 0),  # Dark Green
-    '3': (255, 0, 0),  # Intense Red
+    '3': (204, 0, 0),  # Intense Red
     '4': (0, 0, 102),  # Dark Blue
     '5': (153, 76, 0),  # Dark Brown
     '6': (102, 255, 255),  # Light Blue
@@ -57,8 +58,8 @@ COLORS = {  # Colors for different danger levels
     '8': (128, 128, 128)  # Gray
 }
 
-DANGER_LEVEL_FONT = pyg.font.SysFont(pyg.font.get_default_font(), int(CELLSIZE*1.1))
-
+DANGER_LEVEL_FONT = pyg.font.SysFont('arial', math.floor(CELLSIZE*0.9))
+#pyg.font.get_default_font()
 GRAPHICS = {
     'folder': 'graphics/',
     'cell': {
