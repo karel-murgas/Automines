@@ -104,7 +104,7 @@ def game(difficulty):
                     populated = True
                     minefield.populate(row, col)
                 target = minefield.map[row][col]
-                target.reveal(minefield)
+                target.reveal(minefield)  # TODO Change to set of fields to reveal, add while cycle and set merging
                 screen.blit(target.image, target.rect)
 
         pyg.display.flip()

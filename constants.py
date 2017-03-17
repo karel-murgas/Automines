@@ -59,7 +59,7 @@ COLORS = {  # Colors for different danger levels
 }
 
 DANGER_LEVEL_FONT = pyg.font.SysFont('arial', math.floor(CELLSIZE*0.9))
-#pyg.font.get_default_font()
+
 GRAPHICS = {
     'folder': 'graphics/',
     'cell': {

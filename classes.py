@@ -125,5 +125,8 @@ class Cell(pyg.sprite.Sprite):
                 self.status = 'clear'
                 self.count_mines(minefield)
             self.load_image(self.status)
-            if self.danger_level:  # Exists and is not 0
-                self.print_danger_level()
+            if self.danger_level is not None:
+                if self.danger_level == 0:
+                    pass  # TODO Create set of cells to reveal and return it
+                else:
+                    self.print_danger_level()
